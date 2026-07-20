@@ -2,19 +2,28 @@ import cv2
 
 cap = cv2.VideoCapture("demonslayer.mp4")
 
-slow_factor = 0.5
-fast_factor = 2.0
+width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+fps = cap.get(cv2.CAP_PROP_FPS)
 
-ret, frame = cap.read()
+out = cv2.VideoWriter("output_video.mp4",
+                      cv2.VideoWriter_fourcc(*'mp4v'),
+                      fps,
+                      (width, height))
 
-while ret:
-    cv2.imshow('Slow Motion', cv2.resize(frame, None, fx=slow_factor, fy=slow_factor))
-    cv2.imshow('Fast Motion', cv2.resize(frame, None, fx=fast_factor, fy=fast_factor))
+while True:
+    ret, frame = cap.read()
+
+    if not ret:
+        break
+
+    out.write(frame)
+
+    cv2.imshow("Video", frame)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
-    ret, frame = cap.read()
-
 cap.release()
+out.release()
 cv2.destroyAllWindows()

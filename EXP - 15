@@ -1,0 +1,31 @@
+import cv2
+import numpy as np
+
+# Read input image
+image = cv2.imread("sample.jpg")
+
+# Check if image loaded
+if image is None:
+    print("ERROR: input.jpg not found!")
+    exit()
+
+# Convert to grayscale
+gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+# Convert to float32
+gray = np.float32(gray)
+
+# Apply Harris Corner Detection
+corners = cv2.cornerHarris(gray, 2, 3, 0.04)
+
+# Dilate corners to mark them clearly
+corners = cv2.dilate(corners, None)
+
+# Mark corners in red
+image[corners > 0.01 * corners.max()] = [0, 0, 255]
+
+# Display result
+cv2.imshow("Harris Corner Detection", image)
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()

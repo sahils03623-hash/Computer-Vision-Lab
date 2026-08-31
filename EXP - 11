@@ -1,0 +1,19 @@
+import cv2
+
+# Read input image
+image = cv2.imread("sample.jpg")
+
+# Check if image is loaded
+if image is None:
+    print("ERROR: input.jpg not found!")
+    exit()
+
+# Rotate image 180 degrees
+rotated_image = cv2.rotate(image, cv2.ROTATE_180)
+
+# Display images
+cv2.imshow("Original Image", image)
+cv2.imshow("180 Degree Rotated Image", rotated_image)
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()
